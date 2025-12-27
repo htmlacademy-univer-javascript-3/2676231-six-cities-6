@@ -6,21 +6,14 @@ import Enter from '../components/pages/Enter';
 import Fav from '../components/pages/Fav';
 import Offer from '../components/pages/Offer';
 import PrivateRoute from '../components/PrivateRoute';
-import { OfferType } from '../mocks/offers';
 
-interface AppProps {
-  offers: OfferType[];
-}
-
-function App({ offers }: AppProps): JSX.Element {
+function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element = {
-            <Main offers={offers} />
-          }
+          element={<Main />}
         />
 
         <Route
@@ -32,14 +25,14 @@ function App({ offers }: AppProps): JSX.Element {
           path={AppRoute.Favorites}
           element = {
             <PrivateRoute authStatus={AuthStatus.NoAuth}>
-              <Fav offers={offers} />
+              <Fav />
             </PrivateRoute>
           }
         />
 
         <Route
           path={AppRoute.Offer}
-          element = {<Offer offers={offers} />}
+          element = {<Offer />}
         />
 
         <Route
