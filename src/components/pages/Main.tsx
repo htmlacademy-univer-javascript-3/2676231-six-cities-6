@@ -8,7 +8,8 @@ import Spinner from '../Spinner';
 import ErrorMessage from '../ErrorMessage';
 import { City, Points } from '../../types';
 import { RootState, AppDispatch } from '../../store';
-import { changeCity, fetchOffersAction } from '../../store/action';
+import { changeCity, fetchOffersAction, logout } from '../../store/action';
+import { AuthStatus } from '../../const';
 import CitiesList from '../CitiesList';
 
 const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
@@ -19,6 +20,8 @@ function Main(): JSX.Element {
   const allOffers = useSelector((state: RootState) => state.offers);
   const isOffersDataLoading = useSelector((state: RootState) => state.isOffersDataLoading);
   const offersDataError = useSelector((state: RootState) => state.offersDataError);
+  const authStatus = useSelector((state: RootState) => state.authStatus);
+  const user = useSelector((state: RootState) => state.user);
 
   const filteredOffers = allOffers.filter((offer) => offer.city.name === selectedCity);
 
@@ -49,6 +52,10 @@ function Main(): JSX.Element {
     dispatch(changeCity(city));
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -61,19 +68,33 @@ function Main(): JSX.Element {
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
-                <li className="header__nav-item user">
-                  <a className="header__nav-link header__nav-link--profile" href="#">
-                    <div className="header__avatar-wrapper user__avatar-wrapper">
-                    </div>
-                    <span className="header__user-name user__name">Oliver.conner@gmail.com</span>
-                    <span className="header__favorite-count">3</span>
-                  </a>
-                </li>
-                <li className="header__nav-item">
-                  <a className="header__nav-link" href="#">
-                    <span className="header__signout">Sign out</span>
-                  </a>
-                </li>
+                {authStatus === AuthStatus.Auth && user ? (
+                  <>
+                    <li className="header__nav-item user">
+                      <Link className="header__nav-link header__nav-link--profile" to={AppRoute.Favorites}>
+                        <div className="header__avatar-wrapper user__avatar-wrapper">
+                          <img className="header__avatar user__avatar" src={user.avatarUrl} alt={user.name} width="20" height="20" />
+                        </div>
+                        <span className="header__user-name user__name">{user.email}</span>
+                        <span className="header__favorite-count">{allOffers.filter((offer) => offer.isFavorite).length}</span>
+                      </Link>
+                    </li>
+                    <li className="header__nav-item">
+                      <a className="header__nav-link" href="#" onClick={(e) => {
+                        e.preventDefault(); handleLogout();
+                      }}
+                      >
+                        <span className="header__signout">Sign out</span>
+                      </a>
+                    </li>
+                  </>
+                ) : (
+                  <li className="header__nav-item">
+                    <Link className="header__nav-link" to={AppRoute.Login}>
+                      <span className="header__login">Sign in</span>
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>

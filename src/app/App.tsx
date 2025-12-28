@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from '../components/pages/Main';
 import Error from '../components/pages/Error';
-import { AppRoute, AuthStatus } from '../const';
+import { AppRoute } from '../const';
 import Enter from '../components/pages/Enter';
 import Fav from '../components/pages/Fav';
 import Offer from '../components/pages/Offer';
@@ -24,7 +24,7 @@ function App(): JSX.Element {
         <Route
           path={AppRoute.Favorites}
           element = {
-            <PrivateRoute authStatus={AuthStatus.NoAuth}>
+            <PrivateRoute>
               <Fav />
             </PrivateRoute>
           }
