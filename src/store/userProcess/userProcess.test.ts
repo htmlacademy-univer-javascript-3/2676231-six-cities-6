@@ -16,7 +16,7 @@ describe('user-process reducer', () => {
   it('should return initial state', () => {
     const state = userProcess(undefined, { type: 'unknown' });
     expect(state).toEqual({
-      authorizationStatus: AuthStatus.Unknown,
+      authStatus: AuthStatus.Unknown,
       user: null,
     });
   });

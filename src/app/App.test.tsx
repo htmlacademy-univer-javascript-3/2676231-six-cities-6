@@ -52,7 +52,7 @@ describe('App routing', () => {
   it('should render LoginPage for route "/login"', () => {
     const store = createMockStore({
       user: {
-        authorizationStatus: AuthStatus.NoAuth,
+        authStatus: AuthStatus.NoAuth,
         user: null,
       },
     });
@@ -68,7 +68,7 @@ describe('App routing', () => {
   it('should render FavoritesPage for route "/favorites" when authenticated', () => {
     const store = createMockStore({
       user: {
-        authorizationStatus: AuthStatus.Auth,
+        authStatus: AuthStatus.Auth,
         user: {
           email: 'test@example.com',
           token: 'token',
@@ -90,7 +90,7 @@ describe('App routing', () => {
   it('should redirect to "/login" for route "/favorites" when not authenticated', () => {
     const store = createMockStore({
       user: {
-        authorizationStatus: AuthStatus.NoAuth,
+        authStatus: AuthStatus.NoAuth,
         user: null,
       },
     });
@@ -124,7 +124,7 @@ describe('App routing', () => {
     );
 
     expect(screen.getByText('404.')).toBeInTheDocument();
-    expect(screen.getByText('Page not found')).toBeInTheDocument();
+    expect(screen.getByText('Страница не найдена....')).toBeInTheDocument();
     expect(screen.getByText('Go to main page')).toBeInTheDocument();
   });
 });
