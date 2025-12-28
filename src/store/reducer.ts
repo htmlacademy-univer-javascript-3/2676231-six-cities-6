@@ -1,12 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { OfferType } from '../offer';
-import { changeCity, loadOffers, setOffersDataLoading, setOffersDataError } from './action';
+import { User } from '../user';
+import { AuthStatus } from '../const';
+import { TOKEN_KEY } from '../services/api';
+import { changeCity, loadOffers, setOffersDataLoading, setOffersDataError, requireAuthorization, setUser, logout } from './action';
 
 interface State {
   city: string;
   offers: OfferType[];
   isOffersDataLoading: boolean;
   offersDataError: string | null;
+  authStatus: AuthStatus;
+  user: User | null;
 }
 
 const initialState: State = {
@@ -14,6 +19,8 @@ const initialState: State = {
   offers: [],
   isOffersDataLoading: false,
   offersDataError: null,
+  authStatus: AuthStatus.NoAuth,
+  user: null,
 };
 
 const appReducer = createReducer(initialState, (builder) => {
@@ -29,6 +36,17 @@ const appReducer = createReducer(initialState, (builder) => {
     })
     .addCase(setOffersDataError, (state, action) => {
       state.offersDataError = action.payload;
+    })
+    .addCase(requireAuthorization, (state, action) => {
+      state.authStatus = action.payload;
+    })
+    .addCase(setUser, (state, action) => {
+      state.user = action.payload;
+    })
+    .addCase(logout, (state) => {
+      state.authStatus = AuthStatus.NoAuth;
+      state.user = null;
+      localStorage.removeItem(TOKEN_KEY);
     });
 });
 
