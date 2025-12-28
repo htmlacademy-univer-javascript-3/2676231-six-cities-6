@@ -1,4 +1,7 @@
-import matchers from '@testing-library/jest-dom/matchers';
-import { expect } from 'vitest';
+import '@testing-library/jest-dom/vitest';
 
-expect.extend(matchers);
+// Mock window.scrollTo
+Object.defineProperty(window, 'scrollTo', {
+  value: () => {},
+  writable: true,
+});
