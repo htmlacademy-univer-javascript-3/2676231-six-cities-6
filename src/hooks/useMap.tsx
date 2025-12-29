@@ -43,7 +43,7 @@ function useMap(
           city.zoom ?? 10
         );
       } catch {
-        
+        // Ignore map view errors
       }
     }
   }, [map, city]);
